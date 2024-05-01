@@ -9,7 +9,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MEMORIMAGE - Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -28,7 +28,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginForm> {
-  // Var menyimpan username sebelum login
+  // Var menyimpan username sebelum simpan ke Shared Pref
   String username = "";
 
   // Var dummy untuk mengecek apakah pass kosong
@@ -58,6 +58,7 @@ class _LoginState extends State<LoginForm> {
               color: Colors.white,
               boxShadow: const [BoxShadow(blurRadius: 20)]),
           child: Column(children: [
+
             // Text input Email
             Padding(
               padding: const EdgeInsets.all(10),
