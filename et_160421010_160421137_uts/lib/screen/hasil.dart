@@ -11,7 +11,7 @@ class Hasil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title = "";
-    if (score == 500) {
+    if (score >= 500) {
       title = "Maestro dell'Indovinello \n(Master of Riddles)";
     } else if (score == 400) {
       title = "Esperto dell'Indovinello \n(Expert of Riddles)";

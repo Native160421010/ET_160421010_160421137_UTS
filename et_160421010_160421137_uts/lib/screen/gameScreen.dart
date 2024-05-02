@@ -1,7 +1,4 @@
-// The following code is designed with android look in mind, please use tab view
-// and use flutter run -d chrome --web-renderer html to access the images from the internet.
-
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -12,32 +9,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List<List<String>> listScore = [];
-
-// Method ambil List Score dari Shared Pref
-Future<List<List<String>>> checkScore() async {
-  final prefs = await SharedPreferences.getInstance();
-  List<String>? stringList = prefs.getStringList("ListScore");
-  if (stringList != null) {
-    List<List<String>> listScore =
-        stringList.map((string) => string.split(',')).toList();
-    return listScore;
-  } else {
-    return [];
-  }
-}
-
-String formatTime(int hitung) {
-  var hours = (hitung ~/ 3600).toString().padLeft(2, '0');
-  var minutes = ((hitung % 3600) ~/ 60).toString().padLeft(2, '0');
-  var seconds = (hitung % 60).toString().padLeft(2, '0');
-  return "$hours:$minutes:$seconds";
-}
-
-String cur_user = "";
-int _point = 0;
-bool gameStart = true;
-
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
   @override
@@ -45,11 +16,17 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  String cur_user = "";
+  int _point = 0;
+  bool gameStart = true; // Atur visibility
+
   late Timer _timer;
-  final int _init_value = 5; // nilai default timer
-  int _timeRemaining = 5; // nilai timer yang akan berkurang terus
+  final int _init_value = 5; // Nilai default timer
+  int _timeRemaining = 5; // Nilai timer yang akan berkurang terus
+  int addPoint = 100; // Tambahan poin jika benar (malas masuk ke method lol)
 
   int _question_no = 0; // anda tahu ini apa
+  List<List<String>> listScore = [];
   final List<QuestionObj> _questions = [];
 
   @override
@@ -99,6 +76,13 @@ class _QuizState extends State<Quiz> {
     _questions.shuffle();
   }
 
+  String formatTime(int hitung) {
+    var hours = (hitung ~/ 3600).toString().padLeft(2, '0');
+    var minutes = ((hitung % 3600) ~/ 60).toString().padLeft(2, '0');
+    var seconds = (hitung % 60).toString().padLeft(2, '0');
+    return "$hours:$minutes:$seconds";
+  }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -126,7 +110,7 @@ class _QuizState extends State<Quiz> {
     setState(() {
       // Jika benar poin bertambah (duh!)
       if (answer == _questions[_question_no].answer) {
-        _point += 100;
+        _point += addPoint;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Correct!")),
         );
@@ -154,46 +138,38 @@ class _QuizState extends State<Quiz> {
     _question_no = 0;
     gameStart = true;
 
-    // // Preferensi
-    // final prefs = await SharedPreferences.getInstance();
-    // List<String>? stringList = prefs.getStringList("ListScore");
-    // List<List<String>> ListScore =
-    //     stringList?.map((list) => list.split(',')).toList() ?? [];
+    // Preferensi
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? stringList = prefs.getStringList("ListScore");
+    List<List<String>> ListScore =
+        stringList?.map((list) => list.split(',')).toList() ?? [];
 
-    // // Ambil username
-    // String username = prefs.getString("username") ?? '';
+    // Ambil username
+    String username = prefs.getString("username") ?? '';
 
-    // // Bandingkan score terlebih dahulu
-    // for (int i = 0; i < ListScore.length; i++) {
-    //   int pointCompare = int.parse(ListScore[i][1]);
+    // Bandingkan score terlebih dahulu
+    for (int i = 0; i < ListScore.length; i++) {
+      int pointCompare = int.parse(ListScore[i][1]);
 
-    //   if (pointCompare > _point) {
-    //     ListScore.insert(
-    //         i, [username, _point.toString(), "https://imgur.com/fCbeYDm.jpeg"]);
-    //   } else {
-    //     break;
-    //   }
-    // }
+      if (_point > pointCompare) {
+        ListScore.insert(
+            i, [username, _point.toString(), "assets/images/Baaaaa.jpeg"]);
+        break;
+      }
+    }
 
-    // // Logging
-    // print('ListScore before update: $ListScore');
+    await Future.delayed(const Duration(milliseconds: 10));
+    List<String> updatedStringList =
+        ListScore.map((list) => list.join(',')).toList();
+    await prefs.setStringList("ListScore", updatedStringList);
 
-    // // Update Shared Pref
-    // List<String> updatedStringList =
-    //     ListScore.map((list) => list.join(',')).toList();
-    // await prefs.setStringList("ListScore", updatedStringList);
+    dispose();
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Hasil(_point)),
     );
   }
-
-  // void callbackFunction(int index) {
-  //   if (index == _questions.length - 1) {
-  //     startTimer(1);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +233,8 @@ class _QuizState extends State<Quiz> {
                         enableInfiniteScroll: false,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 1),
-                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enlargeCenterPage: true,
                         scrollDirection: Axis.horizontal,

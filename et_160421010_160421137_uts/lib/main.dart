@@ -46,9 +46,9 @@ void initializeHighScores() async {
   if (stringList == null || stringList.isEmpty) {
     // Data dummy jika tidak ada pada HS
     List<String> ListDummy = [
-      "Garth Ranzz, 1000, https://imgur.com/fCbeYDm.jpeg",
-      "String A, 750, https://imgur.com/fCbeYDm.jpeg",
-      "123456789012345, 500, https://imgur.com/fCbeYDm.jpeg"
+      "Mike, 1000, assets/images/Mike.jpg",
+      "String A, 750, assets/images/Jonathan.jpg",
+      "123456789012345, 500, assets/images/Fish.jpeg"
     ];
     prefs.setStringList("ListScore", ListDummy);
   }

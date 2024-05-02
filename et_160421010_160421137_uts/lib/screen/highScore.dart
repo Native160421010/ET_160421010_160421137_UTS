@@ -1,4 +1,5 @@
 // ignore: file_names
+import 'package:et_160421010_160421137_uts/screen/hasil.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,9 @@ class HighScore extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MEMORIMAGE - High Score',
-      theme: ThemeData( scaffoldBackgroundColor: Colors.lightGreenAccent,),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.lightGreenAccent,
+      ),
       home: const HighScoreForm(),
     );
   }
@@ -45,8 +48,7 @@ class _HighScoreState extends State<HighScoreForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Center(child: Text('HIGH SCORE')),
+        title: const Text('GAME'),
       ),
       body: SingleChildScrollView(
           child: Column(children: [
@@ -55,6 +57,34 @@ class _HighScoreState extends State<HighScoreForm> {
           physics: const NeverScrollableScrollPhysics(),
           children: DisplayScore(),
         ),
+        // ElevatedButton(
+        //   style: ElevatedButton.styleFrom(
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(10),
+        //     ),
+        //     elevation: 4,
+        //   ),
+        //   onPressed: () async {
+        //     final prefs = await SharedPreferences.getInstance();
+        //     prefs.remove("username");
+        //     Navigator.pushReplacement(
+        //       // ignore: use_build_context_synchronously
+        //       context,
+        //       MaterialPageRoute(builder: (context) => const HighScore()),
+        //     );
+        //   },
+        //   child: const SizedBox(
+        //     width: 200,
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Icon(Icons.gamepad),
+        //         SizedBox(width: 8),
+        //         Text("Delete"),
+        //       ],
+        //     ),
+        //   ),
+        // )
       ])),
     );
   }
@@ -84,8 +114,7 @@ List<Widget> DisplayScore() {
             //mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center, // tinggi
             children: [
-
-              // ============================ RANK ============================ 
+              // ============================ RANK ============================
               Container(
                 padding: const EdgeInsets.only(right: 15),
                 child: Text(
@@ -93,8 +122,8 @@ List<Widget> DisplayScore() {
                   style: const TextStyle(fontSize: 20, fontFamily: 'Britannic'),
                 ),
               ),
-              
-              // ============================ PROFIL ============================ 
+
+              // ============================ PROFIL ============================
               Container(
                 width: 50,
                 height: 50,
@@ -111,20 +140,21 @@ List<Widget> DisplayScore() {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              
-              // ============================ NAMA ============================ 
+
+              // ============================ NAMA ============================
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.only(left: 15),
                   child: Text(
                     ListScore[i][0].toUpperCase(),
-                    style: const TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+                    style: const TextStyle(
+                        fontSize: 20, fontStyle: FontStyle.italic),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
 
-              // ============================ POINTS ============================ 
+              // ============================ POINTS ============================
               Container(
                 padding: const EdgeInsets.all(10),
                 child: Text(
