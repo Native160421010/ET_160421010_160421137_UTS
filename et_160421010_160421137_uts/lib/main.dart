@@ -46,9 +46,9 @@ void initializeHighScores() async {
   if (stringList == null || stringList.isEmpty) {
     // Data dummy jika tidak ada pada HS
     List<String> ListDummy = [
-      "Mike, 1000, assets/images/Mike.jpg",
-      "String A, 750, assets/images/Jonathan.jpg",
-      "123456789012345, 500, assets/images/Fish.jpeg"
+      "Mike, 300, assets/images/Mike.jpg",
+      "String A, 200, assets/images/Jonathan.jpg",
+      "123456789012345, 100, assets/images/Fish.jpeg"
     ];
     prefs.setStringList("ListScore", ListDummy);
   }
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
       title: 'MEMORIMAGE - Home',
       routes: {
         'login': (context) => const Login(),
-        'hasil': (context) => const Hasil(500),
+        // 'hasil': (context) => const Hasil(500),
         'highScore': (context) => const HighScore(),
         'game': (context) => const Quiz(),
       },
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'MEMORIMAGE Home Page'),
+      home: const MyHomePage(title: 'HOME'),
     );
   }
 }
@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 accountEmail: const Text("xyz@gmail.com"),
                 currentAccountPicture: const CircleAvatar(
                     backgroundImage:
-                        NetworkImage("https://i.pravatar.cc/150"))),
+                        AssetImage("assets/images/Baaaaa.jpeg"))),
             ListTile(
               title: const Text("Game"),
               leading: const Icon(Icons.gamepad),
@@ -120,13 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, "highScore");
               },
             ),
-            ListTile(
-              title: const Text("Hasil"),
-              leading: const Icon(Icons.thumb_up_sharp),
-              onTap: () {
-                Navigator.pushNamed(context, "hasil");
-              },
-            ),
+            // ListTile(
+            //   title: const Text("Hasil"),
+            //   leading: const Icon(Icons.thumb_up_sharp),
+            //   onTap: () {
+            //     Navigator.pushNamed(context, "hasil");
+            //   },
+            // ),
             ListTile(
               title: Text(username != "" ? "Logout" : "Login"),
               leading: const Icon(Icons.login),
@@ -139,12 +139,83 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Welcome to MEMORIMAGE!',
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 10),
+              child: const Text(
+                'Cara Bermain:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
+                '1. Sistem akan menampilkan 5 gambar secara acak selama 3 detik. Ingatlah gambar-gambar tersebut.',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
+                '2. Setelah itu, sistem akan menampilkan 4 opsi gambar, di mana salah satunya adalah gambar yang harus diingat oleh pemain, dan 3 lainnya adalah gambar pengecoh yang mirip.',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Text(
+                '3. Pengguna memiliki waktu 30 detik untuk memilih gambar yang benar.',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
+                '4. Jika waktu habis, pertanyaan tersebut akan dilewati tanpa mendapatkan poin.',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
+                '5. Tujuan pemain adalah memilih gambar yang sesuai dengan yang ditampilkan sebelumnya.',
+                style: TextStyle(fontSize: 10),
+              ),
+            ),
+            const Divider(
+              height: 16,
+              color: Colors.transparent,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 4,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Quiz()),
+                );
+              },
+              child: const SizedBox(
+                width: 200,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.gamepad),
+                    SizedBox(width: 8),
+                    Text("Play Game"),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

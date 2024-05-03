@@ -46,7 +46,7 @@ class _LoginState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('MEMORIMAGE - LOGIN '),
+          title: const Text('LOGIN'),
         ),
         body: Container(
           height: 300,

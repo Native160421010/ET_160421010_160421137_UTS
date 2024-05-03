@@ -1,19 +1,17 @@
 // ignore: file_names
-import 'package:et_160421010_160421137_uts/screen/hasil.dart';
+import 'package:et_160421010_160421137_uts/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HighScore extends StatelessWidget {
   const HighScore({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'MEMORIMAGE - High Score',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.lightGreenAccent,
-      ),
-      home: const HighScoreForm(),
+      home: HighScoreForm(),
     );
   }
 }
@@ -48,7 +46,16 @@ class _HighScoreState extends State<HighScoreForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GAME'),
+        title: const Text('HIGH SCORE'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
           child: Column(children: [
@@ -57,34 +64,6 @@ class _HighScoreState extends State<HighScoreForm> {
           physics: const NeverScrollableScrollPhysics(),
           children: DisplayScore(),
         ),
-        // ElevatedButton(
-        //   style: ElevatedButton.styleFrom(
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(10),
-        //     ),
-        //     elevation: 4,
-        //   ),
-        //   onPressed: () async {
-        //     final prefs = await SharedPreferences.getInstance();
-        //     prefs.remove("username");
-        //     Navigator.pushReplacement(
-        //       // ignore: use_build_context_synchronously
-        //       context,
-        //       MaterialPageRoute(builder: (context) => const HighScore()),
-        //     );
-        //   },
-        //   child: const SizedBox(
-        //     width: 200,
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Icon(Icons.gamepad),
-        //         SizedBox(width: 8),
-        //         Text("Delete"),
-        //       ],
-        //     ),
-        //   ),
-        // )
       ])),
     );
   }
@@ -97,7 +76,8 @@ List<List<String>> ListScore = [];
 List<Widget> DisplayScore() {
   List<Widget> temp = [];
   int i = 0;
-  while (i < ListScore.length) {
+  int highScoreLimit = 3; //ListScore.length;
+  while (i < highScoreLimit) {
     Widget w = Container(
       height: 92,
       margin: const EdgeInsets.only(top: 5, left: 20, right: 20, bottom: 10),
@@ -129,7 +109,7 @@ List<Widget> DisplayScore() {
                 height: 50,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(ListScore[i][2]),
+                    image: AssetImage(ListScore[i][2]),
                     fit: BoxFit.cover,
                   ),
                   border: Border.all(
@@ -165,7 +145,7 @@ List<Widget> DisplayScore() {
             ],
           ),
         ],
-      ),
+      ).animate().slide(duration: 500.ms),
     );
     temp.add(w);
     i++;
